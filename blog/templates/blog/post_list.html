@@ -1,17 +1,28 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="{% static 'blog/_css/bootstrap.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'blog/_css/custom.min.css' %}">
+
 </head>
 <body>
 
 <h1>Blog</h1>
-
-{% for x in object_list %}
+    {% for x in object_list %}
 <h2>{{x.title}}</h2>
 <h3>{{x.created}} by {{x.author}} </h3>
 <p>{{x.content}}</p>
-{%endfor%}
+    {%endfor%}
+
+    <script src="{% static 'blog/_js/jquery.min.js' %}"></script>
+    <script src="{% static 'blog/_js/popper.min.js' %}"></script>
+    <script src="{% static 'blog/_js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/_js/custom.js' %}"></script>
+
 </body>
 </html>
