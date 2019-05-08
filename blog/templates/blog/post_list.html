@@ -8,7 +8,7 @@
 
 <h1>Blog</h1>
 
-{%for x in posts%}
+{% for x in object_list %}
 <h2>{{x.title}}</h2>
 <h3>{{x.created}} by {{x.author}} </h3>
 <p>{{x.content}}</p>
