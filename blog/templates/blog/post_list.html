@@ -101,7 +101,7 @@
 
           <div class="card-body">
             <h2 class="card-title">{{x.title}}</h2>
-            <p class="card-text">{{x.content}}</p>
+            <p class="card-text">{{x.content | truncatewords:50 }}</p>
             <a href="#" class="btn btn-primary">Read More &rarr;</a>
           </div>
           <div class="card-footer text-muted">
