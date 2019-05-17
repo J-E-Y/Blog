@@ -1,12 +1,11 @@
 from django.test import TestCase, Client
 from bs4 import BeautifulSoup
-from .models import Post,Category
+from .models import Post, Category
 from django.utils import timezone
 from django.contrib.auth.models import User
 
 
-
-def create_category(name='life',description=''):
+def create_category(name='life', description=''):
     category, is_created = Category.objects.get_or_create(
         name=name,
         description=description
@@ -27,14 +26,10 @@ def create_post(title, content, author, category=None):
     return blog_post
 
 
-
-
 class TestModel(TestCase):
     def setUp(self):
         self.client = Client()
         self.author_000 = User.objects.create(username='smith', password='nopassword')
-
-
 
     def test_category(self):
         category = create_category()
@@ -43,26 +38,20 @@ class TestModel(TestCase):
             title='The first post',
             content='Hello World. We are the world.',
             author=self.author_000,
-            category = category
+            category=category
         )
 
         self.assertEqual(category.post_set.count(), 1)
 
-
-
-
     def test_post(self):
-
         category = create_category()
 
         post_000 = create_post(
             title='The first post',
             content='Hello World. We are the world.',
             author=self.author_000,
-            category = category
+            category=category
         )
-
-
 
 
 class TestView(TestCase):
@@ -74,6 +63,15 @@ class TestView(TestCase):
         navbar = soup.find('div', id='navbar')
         self.assertIn('Blog', navbar.text)
         self.assertIn('About me', navbar.text)
+
+    def check_right_side(self,soup):
+        # category card 에서
+
+        category_card = soup.find("div", id="category-card")
+        # 1 우선 찾고 2 찾게 하기위해서 우선 html 가서 id 값을 지정한다 like <div class="card my-4" id="category-card">
+
+        self.assertIn("unclassified(1)", category_card.text)  # 미분류 있어야함(1)
+        self.assertIn("political_society(1)", category_card.text)  # 정치/사회있어야함(1)
 
 
 
@@ -97,19 +95,13 @@ class TestView(TestCase):
         self.assertEqual(Post.objects.count(), 0)
         self.assertIn('아직 게시물이 없습니다.', soup.body.text)
 
-
-
-
-
     def test_post_list_with_post(self):
-
         post_000 = create_post(
             title='The first post',
             content='Hello World. We are the world.',
             author=self.author_000,
 
         )
-
 
         post_000 = create_post(
 
@@ -120,7 +112,6 @@ class TestView(TestCase):
 
         )
 
-
         self.assertGreater(Post.objects.count(), 0)
 
         response = self.client.get('/blog/')
@@ -130,30 +121,17 @@ class TestView(TestCase):
         soup = BeautifulSoup(response.content, 'html.parser')
         body = soup.body
 
-
         self.assertNotIn('아직 게시물이 없습니다.', body.text)
         self.assertIn(post_000.title, body.text)
 
-
-
-
-        #category card 에서
-
-        category_card = body.find("div", id="category-card")
-        # 1 우선 찾고 2 찾게 하기위해서 우선 html 가서 id 값을 지정한다 like <div class="card my-4" id="category-card">
-
-        self.assertIn("unclassified(1)",category_card.text)  # 미분류 있어야함(1)
-        self.assertIn("political_society(1)",category_card.text)   # 정치/사회있어야함(1)
+        self.check_right_side(soup)
 
         ### mainn_div에는
 
-        main_div = body.find("div", id = "main_div") # 우선 찾고
+        main_div = soup.find("div", id="main_div")  # 우선 찾고
 
-        self.assertIn("political_society", main_div.text) # main_div에는 정치/사회
-        self.assertIn("unclassified", main_div.text) # main_div에는 unclassified
-
-
-
+        self.assertIn("political_society", main_div.text)  # main_div에는 정치/사회
+        self.assertIn("unclassified", main_div.text)  # main_div에는 unclassified
 
 
 
@@ -162,6 +140,15 @@ class TestView(TestCase):
             title='The first post',
             content='Hello World. We are the world.',
             author=self.author_000,
+        )
+
+        post_000 = create_post(
+
+            title='The sceond post',
+            content='The sceond,The sceond,The sceond',
+            author=self.author_000,
+            category=create_category(name="political_society")
+
         )
 
         self.assertGreater(Post.objects.count(), 0)
@@ -177,3 +164,5 @@ class TestView(TestCase):
         self.assertEqual(title.text, '{} - Blog'.format(post_000.title))
 
         self.check_navbar(soup)
+
+        self.check_right_side(soup)

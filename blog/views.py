@@ -10,12 +10,14 @@ class PostList(ListView):
     def get_queryset(self):
         return Post.objects.order_by('-created')
 
-        # 숫자 가져오는 함수 from django that it already made before
 
-    def get_context_data(self ,*, object_list=None, **kwargs):
+
+    def get_context_data(self ,*, object_list=None, **kwargs): # 숫자 가져오는 함수 from django that it already made before
+
         context = super(PostList, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         context['posts_without_category'] = Post.objects.filter(category=None).count()
+
         # get 하나만가져오는것
         # all 다 가져오는것
         # filter는 특정조건에 있는 것만 가져오는것
@@ -29,6 +31,20 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
+
+
+
+    def get_context_data(self ,*, object_list=None, **kwargs): # 숫자 가져오는 함수 from django that it already made before
+
+        context = super(PostDetail, self).get_context_data(**kwargs)
+        context['category_list'] = Category.objects.all()
+        context['posts_without_category'] = Post.objects.filter(category=None).count()
+
+        # get 하나만가져오는것
+        # all 다 가져오는것
+        # filter는 특정조건에 있는 것만 가져오는것
+
+        return context
 
 
 
