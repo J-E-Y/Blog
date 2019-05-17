@@ -11,18 +11,25 @@
                 {% else %}
                     <img class="card-img-top" src="https://picsum.photos/700/300/?random" alt="Card image cap">
                 {% endif %}
-                 <h2 class="card-title">{{ p.title }}</h2>
+
+              <div class="card-body">
+                {%if p.category%}
+                <span class="badge badge-primary float-right">{{p.category}}</span>
+                {%else%}
+                <span class="badge badge-primary float-right">unclassified</span>
+                {%endif%}
+
+                <h2 class="card-title">{{ p.title }}</h2>
                     <p class="card-text">{{ p.content | truncatewords:50}}</p>
                     <a href="#" class="btn btn-primary">Read More &rarr;</a>
-                </div>
-
- <div class="card-footer text-muted">
+             </div>
+               <div class="card-footer text-muted">
                     Posted on {{ p.created }} by
                     <a href="#">{{ p.author }}</a>
                 </div>
             </div>
-    {% endfor %}
+        {% endfor %}
     {% else %}
-        <h3>아직 게시물이 없습니다. </h3>
-    {% endif %}
+          <h3>아직 게시물이 없습니다. </h3>
+        {% endif %}
 {% endblock %}
