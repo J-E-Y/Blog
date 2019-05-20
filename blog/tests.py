@@ -11,6 +11,9 @@ def create_category(name='life', description=''):
         description=description
     )
 
+    category.slug = category.name.replace(' ', '-').replace('/', '')
+    category.save()
+
     return category
 
 
@@ -126,12 +129,15 @@ class TestView(TestCase):
 
         self.check_right_side(soup)
 
-        ### mainn_div에는
+        ### main_div에는
 
-        main_div = soup.find("div", id="main_div")  # 우선 찾고
+        main_div = soup.find("div", id="main-div")  # 우선 찾고
 
         self.assertIn("political_society", main_div.text)  # main_div에는 정치/사회
-        self.assertIn("unclassified", main_div.text)  # main_div에는 unclassified
+        self.assertIn("unclassified", main_div.text)  # main_div에는
+
+        #post_000_read_more_btn = body.find('a', id="read-more-post-{}".format(post_000.pk))
+        #print(post_000_read_more_btn)
 
 
 
@@ -165,4 +171,39 @@ class TestView(TestCase):
 
         self.check_navbar(soup)
 
+        body = soup.body
+
+        main_div = body.find('div', id='main-div')
+        self.assertIn(post_000.title, main_div.text)
+        self.assertIn(post_000.author.username, main_div.text)
+
+        self.assertIn(post_000.content, main_div.text)
+
         self.check_right_side(soup)
+
+    def test_post_list_by_category(self):
+        category_politics = create_category(name='political_society')
+
+        post_000 = create_post(
+            title='The first post',
+            content='Hello World. We are the world.',
+            author=self.author_000,
+        )
+
+        post_001 = create_post(
+            title='The second post',
+            content='Second Second Second',
+            author=self.author_000,
+            category=category_politics
+        )
+
+        response = self.client.get(category_politics.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        #self.asserEqual('blog - {}'.format(category_politics.name), soup.title.text)
+
+        main_div = soup.find('div', id='main-div')
+        self.assertNotIn('unclassified', main_div.text)
+        self.assertIn(category_politics.name, main_div.text)
