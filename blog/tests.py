@@ -87,7 +87,7 @@ class TestView(TestCase):
         soup = BeautifulSoup(response.content, 'html.parser')
         title = soup.title
 
-        self.assertEqual(title.text, 'Blog')
+        self.assertIn(title.text, 'Blog')
 
         self.check_navbar(soup)
 
@@ -105,8 +105,7 @@ class TestView(TestCase):
             author=self.author_000,
 
         )
-
-        post_000 = create_post(
+        post_001 = create_post(
 
             title='The sceond post',
             content='The sceond,The sceond,The sceond',
@@ -136,10 +135,8 @@ class TestView(TestCase):
         self.assertIn("political_society", main_div.text)  # main_div에는 정치/사회
         self.assertIn("unclassified", main_div.text)  # main_div에는
 
-        #post_000_read_more_btn = body.find('a', id="read-more-post-{}".format(post_000.pk))
-        #print(post_000_read_more_btn)
-
-
+        # post_000_read_more_btn = body.find('a', id='read-more-post-{}'.format(post_000.pk))
+        # self.assertEqual(post_000_read_more_btn['href'], post_000.get_absolute_url())
 
     def test_post_detail(self):
         post_000 = create_post(
@@ -147,16 +144,12 @@ class TestView(TestCase):
             content='Hello World. We are the world.',
             author=self.author_000,
         )
-
-        post_000 = create_post(
-
-            title='The sceond post',
-            content='The sceond,The sceond,The sceond',
+        post_001 = create_post(
+            title='The second post',
+            content='Second Second Second',
             author=self.author_000,
-            category=create_category(name="political_society")
-
+            category=create_category(name='political_society')
         )
-
         self.assertGreater(Post.objects.count(), 0)
         post_000_url = post_000.get_absolute_url()
         self.assertEqual(post_000_url, '/blog/{}/'.format(post_000.pk))
@@ -207,3 +200,30 @@ class TestView(TestCase):
         main_div = soup.find('div', id='main-div')
         self.assertNotIn('unclassified', main_div.text)
         self.assertIn(category_politics.name, main_div.text)
+
+    def test_post_list_no_category(self):
+        category_politics = create_category(name='political_society')
+
+        post_000 = create_post(
+            title='The first post',
+            content='Hello World. We are the world.',
+            author=self.author_000,
+        )
+
+        post_001 = create_post(
+            title='The second post',
+            content='Second Second Second',
+            author=self.author_000,
+            category=category_politics
+        )
+
+        response = self.client.get('/blog/category/_none/')
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # self.asserEqual('blog - {}'.format(category_politics.name), soup.title.text)
+
+        main_div = soup.find('div', id='main-div')
+        self.assertIn('unclassified', main_div.text)
+        self.assertNotIn(category_politics.name, main_div.text)
