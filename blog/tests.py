@@ -134,8 +134,8 @@ class TestView(TestCase):
         self.assertIn("political_society", main_div.text)  # main_div에는 정치/사회
         self.assertIn("unclassified", main_div.text)  # main_div에는
 
-        #post_000_read_more_btn = body.find('a', id="read-more-post-{}".format(post_000.pk))
-        #print(post_000_read_more_btn)
+        post_000_read_more_btn = body.find('a', id="read-more-post-{}".format(post_000.pk))
+        self.assertEqual(post_000_read_more_btn['href'],post_000.get_absolute_url())
 
 
 
@@ -173,7 +173,7 @@ class TestView(TestCase):
 
         main_div = body.find('div', id='main-div')
         self.assertIn(post_000.title, main_div.text)
-        self.assertNotIn(post_000.author.username, main_div.text)
+        self.assertIn(post_000.author.username, main_div.text)
 
         self.assertIn(post_000.content, main_div.text)
 
