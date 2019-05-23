@@ -96,7 +96,8 @@ class TestModel(TestCase):
 class TestView(TestCase):
     def setUp(self):
         self.client = Client()
-        self.author_000 = User.objects.create(username='smith', password='nopassword')
+        self.author_000 = User.objects.create_user(username='smith', password='nopassword')
+        self.user_obama = User.objects.create_user(username='obama', password='nopassword')
 
     def check_navbar(self, soup):
         navbar = soup.find('div', id='navbar')
@@ -124,11 +125,15 @@ class TestView(TestCase):
         self.assertIn('아직 게시물이 없습니다.', soup.body.text)
 
     def test_post_list_with_post(self):
+        tag_america = create_tag(name='america')
+
         post_000 = create_post(
             title='The first post',
             content='Hello World. We are the world.',
             author=self.author_000,
         )
+        post_000.tags.add(tag_america)
+        post_000.save()
 
         post_001 = create_post(
             title='The second post',
@@ -136,6 +141,8 @@ class TestView(TestCase):
             author=self.author_000,
             category=create_category(name='political_society')
         )
+        post_001.tags.add(tag_america)
+        post_001.save()
 
         self.assertGreater(Post.objects.count(), 0)
 
@@ -156,18 +163,28 @@ class TestView(TestCase):
         self.assertIn('political_society', main_div.text)  # '정치/사회' 있어야 함
         self.assertIn('unclassified', main_div.text)  # '미분류' 있어야 함
 
+        # Tag
+        post_card_000 = main_div.find('div', id='post-card-{}'.format(post_000.pk))
+        self.assertIn('#america', post_card_000.text) # Tag가 해당 post의 card마다 있다.
+
     def test_post_detail(self):
+        category_politics = create_category(name='political_society')
+
         post_000 = create_post(
             title='The first post',
             content='Hello World. We are the world.',
             author=self.author_000,
+            category=category_politics
         )
+
+        tag_america = create_tag(name='america')
+        post_000.tags.add(tag_america)
+        post_000.save()
 
         post_001 = create_post(
             title='The second post',
             content='Second Second Second',
             author=self.author_000,
-            category=create_category(name='political_society')
         )
 
         self.assertGreater(Post.objects.count(), 0)
@@ -193,6 +210,34 @@ class TestView(TestCase):
         self.assertIn(post_000.content, main_div.text)
 
         self.check_right_side(soup)
+
+        # Tag
+        self.assertIn('#america', main_div.text)
+
+        self.assertIn(category_politics.name, main_div.text) # category가 main_div에 있다.
+        self.assertNotIn('EDIT', main_div.text) # EDIT 버튼이 로그인하지 않은 경우 보이지 않는다.
+
+        login_success = self.client.login(username='smith', password='nopassword') # login을 한 경우에는
+        self.assertTrue(login_success)
+        response = self.client.get(post_000_url)
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        main_div = soup.find('div', id='main-div')
+        self.assertEqual(post_000.author, self.author_000) # post.author와 login 한 사용자가 동일하면
+        self.assertIn('EDIT', main_div.text) # EDIT 버튼이 있다.
+
+        # 다른 사람인 경우에는 없다.
+        login_success = self.client.login(username='obama', password='nopassword')  # login을 한 경우에는
+        self.assertTrue(login_success)
+        response = self.client.get(post_000_url)
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        main_div = soup.find('div', id='main-div')
+        self.assertEqual(post_000.author, self.author_000)  # post.author와 login 한 사용자가 동일하면
+        self.assertNotIn('EDIT', main_div.text)  # EDIT 버튼이 있다.
+
 
     def test_post_list_by_category(self):
         category_politics = create_category(name='political_society')
@@ -272,6 +317,6 @@ class TestView(TestCase):
 
         main_div = soup.find('div', id='main-div')
         blog_h1 = main_div.find('h1', id='blog-list-title')
-        self.assertIn('#{}'.format(tag_000.name), main_div.text)
+        self.assertIn('#{}'.format(tag_000.name), blog_h1.text)
         self.assertIn(post_000.title, main_div.text)
         self.assertNotIn(post_001.title, main_div.text)
