@@ -1,11 +1,11 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h1>Blog{% if category %}<small class="text-muted">{{category}}</small>{%endif%}</h1>
+    <h1>Blog {% if category %}<small class="text-muted">: {{ category }}</small>{% endif %}</h1>
     {% if object_list.exists %}
         {% for p in object_list %}
             <!-- Blog Post -->
-            <div class="card mb-4">
+            <div class="card mb-4" id="post-card-{{ p.pk }}">
 
                 {% if p.head_image %}
                     <img class="card-img-top" src="{{ p.head_image.url }}" alt="Card image cap">
@@ -13,24 +13,30 @@
                     <img class="card-img-top" src="https://picsum.photos/700/300/?random" alt="Card image cap">
                 {% endif %}
 
-              <div class="card-body">
-                {%if p.category%}
-                <span class="badge badge-primary float-right">{{p.category}}</span>
-                {%else%}
-                <span class="badge badge-primary float-right">unclassified</span>
-                {%endif%}
-
-                <h2 class="card-title">{{ p.title }}</h2>
+                <div class="card-body">
+                    {% if p.category %}
+                    <span class="badge badge-primary float-right">{{ p.category }}</span>
+                    {% else %}
+                    <span class="badge badge-primary float-right">unclassified</span>
+                    {% endif %}
+                    <h2 class="card-title">{{ p.title }}</h2>
                     <p class="card-text">{{ p.content | truncatewords:50}}</p>
-                    <a href="{{ p.get_absolute_url }}" class="btn btn-primary" id="read-more-post-{{p.pk}}">Read More &rarr;</a>
-             </div>
-               <div class="card-footer text-muted">
+
+                    {% for tag in p.tags.all %}
+                        <a href="{{ tag.get_absolute_url }}">#{{ tag }} </a>
+                    {% endfor %}
+                    <br/>
+                    <br/>
+
+                    <a href="{{ p.get_absolute_url }}" class="btn btn-primary" id="read-more-post-{{ p.pk }}">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted">
                     Posted on {{ p.created }} by
                     <a href="#">{{ p.author }}</a>
                 </div>
             </div>
         {% endfor %}
     {% else %}
-          <h3>아직 게시물이 없습니다. </h3>
-        {% endif %}
+        <h3>아직 게시물이 없습니다. </h3>
+    {% endif %}
 {% endblock %}

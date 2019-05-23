@@ -103,19 +103,18 @@
 
             <!-- Categories Widget -->
             <div class="card my-4" id="category-card">
-
                 <h5 class="card-header">Categories</h5>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
-                                {%for category in category_list%}
+                                {% for category in category_list %}
                                 <li>
-                                    <a href="{{category.get_absolute_url}}">{{ category.name }}({{category.post_set.count}}) </a>
+                                    <a href="{{ category.get_absolute_url }}">{{ category.name }} ({{ category.post_set.count }})</a>
                                 </li>
                                 {% endfor %}
                                 <li>
-                                    <a href="/blog/category/_none">unclassified({{posts_without_category}})</a>
+                                    <a href="/blog/category/_none/">unclassified ({{ posts_without_category }})</a>
                                 </li>
                             </ul>
                         </div>
@@ -125,11 +124,10 @@
         </div>
     </div>
 </div>
-
-
     <script src="{% static 'blog/_js/jquery.min.js' %}"></script>
     <script src="{% static 'blog/_js/popper.min.js' %}"></script>
     <script src="{% static 'blog/_js/bootstrap.min.js' %}"></script>
     <script src="{% static 'blog/_js/custom.js' %}"></script>
+
 </body>
 </html>
