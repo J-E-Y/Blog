@@ -231,7 +231,7 @@ class TestView(TestCase):
             category=category_politics
         )
 
-        # comment_000 = create_post(post_000, text='a test comment', author=self.user_obama)
+        comment_000 = create_comment(post_000, text='a test comment', author=self.user_obama)
 
 
 
@@ -270,11 +270,11 @@ class TestView(TestCase):
 
         self.check_right_side(soup)
 
-        # comment 단순한다 self의 원리를 알자 그리고 assertin 의 원리를 알자
+        # Comment
 
-        # comment_div = main_div.find('div', id='comment-list')
-        # self.assertIn(comment_000.author.username, comment_div.text)
-        # self.assertIn(comment_000.text, comment_div.text)
+        comments_div = main_div.find('div', id='comment-list')
+        self.assertIn(comment_000.author.username, comments_div.text)
+        self.assertIn(comment_000.text, comments_div.text)
 
 
         # Tag
