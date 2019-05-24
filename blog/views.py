@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Post, Category
 from .models import Post, Category, Tag
 from django.views.generic import ListView, DetailView ,UpdateView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class PostList(ListView):
@@ -32,18 +33,16 @@ class PostDetail(DetailView):
 
 
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     fields = [
         'title', 'content', 'head_image', 'category', 'tags'
     ]
-
     def form_valid(self, form):
         current_user = self.request.user
         if current_user.is_authenticated:
             form.instance.author = current_user
             return super(type(self), self).form_valid(form)
-
         else:
             return redirect('/blog/')
 
