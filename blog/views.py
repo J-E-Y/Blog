@@ -29,9 +29,12 @@ class PostDetail(DetailView):
     # all 다 가져오는것
     # filter는 특정조건에 있는 것만 가져오는것
 
-class PostUpdate(UpdateView): # 4
+class PostUpdate(UpdateView):
     model = Post
-    fields = '__all__'  # <<< this code to bring all posts
+
+    fields = [
+        'title', 'content', 'head_image', 'category', 'tags'
+    ]
 
 
 class PostListByTag(ListView):
