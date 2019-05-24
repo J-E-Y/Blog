@@ -177,6 +177,10 @@ class TestView(TestCase):
             category=category_politics
         )
 
+        # comment_000 = create_post(post_000, text='a test comment', author=self.user_obama)
+
+
+
         tag_america = create_tag(name='america')
         post_000.tags.add(tag_america)
         post_000.save()
@@ -186,6 +190,7 @@ class TestView(TestCase):
             content='Second Second Second',
             author=self.author_000,
         )
+
 
         self.assertGreater(Post.objects.count(), 0)
         post_000_url = post_000.get_absolute_url()
@@ -211,7 +216,15 @@ class TestView(TestCase):
 
         self.check_right_side(soup)
 
+        # comment 단순한다 self의 원리를 알자 그리고 assertin 의 원리를 알자
+
+        # comment_div = main_div.find('div', id='comment-list')
+        # self.assertIn(comment_000.author.username, comment_div.text)
+        # self.assertIn(comment_000.text, comment_div.text)
+
+
         # Tag
+
         self.assertIn('#america', main_div.text)
 
         self.assertIn(category_politics.name, main_div.text) # category가 main_div에 있다.
@@ -320,3 +333,21 @@ class TestView(TestCase):
         self.assertIn('#{}'.format(tag_000.name), blog_h1.text)
         self.assertIn(post_000.title, main_div.text)
         self.assertNotIn(post_001.title, main_div.text)
+
+    def test_post_update(self):  # 1
+        post_000 = create_post(
+            title='The first post',
+            content='Hello World. We are the world.',
+            author=self.author_000,
+        )
+
+        self.assertEqual(post_000.get_update_url(), post_000.get_absolute_url() + 'update/')
+
+        response = self.client.get(post_000.get_update_url())
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        main_div = soup.find('div', id='main-div')
+
+        self.assertNotIn('Created', main_div.text)
+        self.assertNotIn('Author', main_div.text)

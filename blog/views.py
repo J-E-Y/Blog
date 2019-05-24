@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Post, Category
 from .models import Post, Category, Tag
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView ,UpdateView
 
 
 class PostList(ListView):
@@ -29,6 +29,10 @@ class PostDetail(DetailView):
     # all 다 가져오는것
     # filter는 특정조건에 있는 것만 가져오는것
 
+class PostUpdate(UpdateView): # 4
+    model = Post
+    fields = '__all__'  # <<< this code to bring all posts
+
 
 class PostListByTag(ListView):
     def get_queryset(self):
@@ -45,6 +49,8 @@ class PostListByTag(ListView):
         context['tag'] = Tag.objects.get(slug=tag_slug)
 
         return context
+
+
 class PostListByCategory(ListView):
 
     def get_queryset(self):

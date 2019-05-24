@@ -44,7 +44,7 @@ class Post(models.Model):
 
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
 
-    tags = models.ManyToManyField(Tag,null=True, blank=True) # post tag 선택이 비워있어도 된다 if you use null and blank)
+    tags = models.ManyToManyField(Tag, blank=True) # post tag 선택이 비워있어도 된다 if you use null and blank)
 
     def __str__(self):
         return '{} :: {}'.format(self.title, self.author)
@@ -52,5 +52,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return '/blog/{}/'.format(self.pk)
 
+    def get_update_url(self):
+        return self.get_absolute_url() + 'update/'  # 2
+
     def get_markdown_content(self):
         return markdown(self.content)
+
