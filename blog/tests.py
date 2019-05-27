@@ -200,16 +200,19 @@ class TestView(TestCase):
 
         self.assertGreater(Post.objects.count(), 0)
 
+
         response = self.client.get('/blog/')
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
         body = soup.body
+
+
         self.assertNotIn('아직 게시물이 없습니다.', body.text)
         self.assertIn(post_000.title, body.text)
 
+
         post_000_read_more_btn = body.find('a', id='read-more-post-{}'.format(post_000.pk))
         self.assertEqual(post_000_read_more_btn['href'], post_000.get_absolute_url())
-
         self.check_right_side(soup)
 
         # main_div에는
@@ -271,7 +274,6 @@ class TestView(TestCase):
         self.check_right_side(soup)
 
         # Comment
-
         comments_div = main_div.find('div', id='comment-list')
         self.assertIn(comment_000.author.username, comments_div.text)
         self.assertIn(comment_000.text, comments_div.text)
@@ -299,7 +301,6 @@ class TestView(TestCase):
         self.assertTrue(login_success)
         response = self.client.get(post_000_url)
         self.assertEqual(response.status_code, 200)
-
         soup = BeautifulSoup(response.content, 'html.parser')
         main_div = soup.find('div', id='main-div')
         self.assertEqual(post_000.author, self.author_000)  # post.author와 login 한 사용자가 동일하면
@@ -388,17 +389,16 @@ class TestView(TestCase):
         self.assertIn(post_000.title, main_div.text)
         self.assertNotIn(post_001.title, main_div.text)
 
+
+
     def test_post_create(self):
         response = self.client.get('/blog/create/')
         self.assertNotEqual(response.status_code, 200)
-
         self.client.login(username='smith', password='nopassword')
         response = self.client.get('/blog/create/')
         self.assertEqual(response.status_code, 200)
-
         soup = BeautifulSoup(response.content, 'html.parser')
         main_div = soup.find('div', id='main-div')
-
 
 
     def test_post_update(self):  # 1

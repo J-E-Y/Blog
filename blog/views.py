@@ -15,6 +15,9 @@ class PostList(ListView):
         context = super(PostList, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         context['posts_without_category'] = Post.objects.filter(category=None).count()
+
+        #context['comment_form'] = CommentForm()
+
         return context
 
 class PostDetail(DetailView):
