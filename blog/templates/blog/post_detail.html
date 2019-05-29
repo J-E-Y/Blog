@@ -73,7 +73,6 @@
             </div>
         {% endfor %}
     </div>
-
     {% for comment in object.comment_set.all %}
         {% if user == comment.author %}
             <!-- Modal -->
@@ -98,5 +97,4 @@
             </div>
         {% endif %}
     {% endfor %}
-
 {% endblock %}
