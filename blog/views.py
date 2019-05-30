@@ -25,11 +25,24 @@ class PostList(ListView):
         return context
 
 
+
+
 class PostSearch(PostList):
+
     def get_queryset(self):
         q = self.kwargs['q']
         object_list = Post.objects.filter(Q(title__contains=q) | Q(content__contains=q))
         return object_list
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PostSearch, self).get_context_data()
+        context['search_info'] = 'Search: "{}"'.format(self.kwargs['q'])
+        return context
+
+
+
+
+
 
 class PostDetail(DetailView):
     model = Post
@@ -44,6 +57,9 @@ class PostDetail(DetailView):
     # get 하나만가져오는것
     # all 다 가져오는것
     # filter는 특정조건에 있는 것만 가져오는것
+
+
+
 
 
 
@@ -67,6 +83,9 @@ class PostUpdate(UpdateView):
     fields = [
         'title', 'content', 'head_image', 'category', 'tags'
     ]
+
+
+
 
 
 
@@ -148,10 +167,6 @@ class CommentUpdate(UpdateView):
             raise PermissionError("Are you Hacker get out of here ?")
 
         return comment
-
-
-
-
 
 
 
