@@ -1,7 +1,26 @@
 {% extends 'basecamp/base_full.html' %}
-
+{%load static%}
 {% block content %}
+<br>
     <div class="container">
-        <h1>About_Me</h1>
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="my-3">About_Me</h1>
+                <h2 class="my-3">Hello I'm a best developer in the world</h2>
+                <h3 class="my-3">I do not know what to do for the future</h3>
+                <p>I only knew Christ as the High priest typified by the order of Aaron. Only after many years did I learn that I could come to the throne of grace and touch our High priest who ministers to me the bread and wine, I do not need to try to be a success. I simply need to come forward to the throne of grace and enjoy the positive High priest ministering the bread and wine.
+</p>
+
+            </div>
+            <div class="col-md">
+                <img class="img-fluid" width="500px"src="{% static 'basecamp/images/man.jpg'%}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+        </div>
+
     </div>
+
+
 {%endblock%}
