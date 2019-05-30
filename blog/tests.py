@@ -598,3 +598,5 @@ class TestView(TestCase):
         self.assertNotIn(post_000.title,soup.body.text)
 
 
+
+
