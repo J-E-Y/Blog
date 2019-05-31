@@ -25,6 +25,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['66.42.40.54','127.0.0.1','rightfuljung.com','www.rightfuljung.com']
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -138,6 +140,8 @@ AUTHENTICATION_BACKENDS = (
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+SITE_ID = 1
 
 
 STATIC_URL = '/static/'
