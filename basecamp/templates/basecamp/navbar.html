@@ -1,31 +1,16 @@
-
 <div class="navbar navbar-expand-lg fixed-top navbar-light bg-light" id="navbar">
     <div class="container">
-        <a href="/" class="navbar-brand">John's Blog</a>
+        <a href="/" class="navbar-brand">Elvis Lab.</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav">
-
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/blog/">Blog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about_me/">About me</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="download">construction<span class="caret"></span></a>
-                    <div class="dropdown-menu" aria-labelledby="download">
-                        <a class="dropdown-item" href="https://jsfiddle.net/bootswatch/3he50zsf/">Open in JSFiddle</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="../4/simplex/bootstrap.min.css">bootstrap.min.css</a>
-                        <a class="dropdown-item" href="../4/simplex/bootstrap.css">bootstrap.css</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="../4/simplex/_variables.scss">_variables.scss</a>
-                        <a class="dropdown-item" href="../4/simplex/_bootswatch.scss">_bootswatch.scss</a>
-                    </div>
                 </li>
             </ul>
 
@@ -56,7 +41,6 @@
     </div>
 </div>
 
-
 {% load socialaccount %}
 
 <!-- Modal -->
@@ -70,7 +54,7 @@
                 </button>
             </div>
             <div class="modal-body">
-              <div class="row">
+                <div class="row">
                     <div class="col-md-6">
                         <a role="button" class="btn btn-outline-primary" href="{% provider_login_url 'google' %}"><i class="fab fa-google"></i>  Log in with Google</a>
                         <a role="button" class="btn btn-outline-info" href="/accounts/login/"><i class="far fa-envelope"></i>  Log in with Email</a>
@@ -79,13 +63,11 @@
                         <a role="button" class="btn btn-outline-info" href="/accounts/signup/"><i class="far fa-envelope"></i>  Sign Up with Email</a>
                     </div>
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
             </div>
         </div>
     </div>
 </div>
-
-

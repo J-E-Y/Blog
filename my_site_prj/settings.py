@@ -25,7 +25,7 @@ SECRET_KEY = 'po0%g^ivgx#mf*rk#_yufmlmnb9)lm+w^l*+bu*wcvk%3!$!0s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['66.42.40.54', '127.0.0.1']
 
 
 # Application definition
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'blog',
-    'basecamp'
+    'basecamp',
 ]
 
 MIDDLEWARE = [

@@ -1,26 +1,27 @@
 {% extends 'basecamp/base_full.html' %}
-{%load static%}
+{% load static %}
 {% block content %}
-<br>
     <div class="container">
         <div class="row">
             <div class="col-md-9">
-                <h1 class="my-3">About_Me</h1>
-                <h2 class="my-3">Hello I'm a best developer in the world</h2>
-                <h3 class="my-3">I do not know what to do for the future</h3>
-                <p>I only knew Christ as the High priest typified by the order of Aaron. Only after many years did I learn that I could come to the throne of grace and touch our High priest who ministers to me the bread and wine, I do not need to try to be a success. I simply need to come forward to the throne of grace and enjoy the positive High priest ministering the bread and wine.
-</p>
+                <h1 class="my-3">About Me</h1>
+                <h3 class="my-3">안녕하세요. 개발자 Elvis 입니다. </h3>
 
+                <h5 class="my-2">새로운 일을 기다리고 있습니다. </h5>
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tene</p>
             </div>
             <div class="col-md">
-                <img class="img-fluid" width="500px"src="{% static 'basecamp/images/man.jpg'%}">
+                <img class="img-fluid" src="{% static 'basecamp/images/man.jpg' %}"/>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8"></div>
+            <div class="col-md-3">
+                <img class="img-fluid" src="{% static 'basecamp/images/man.jpg' %}"/>
+            </div>
+            <div class="col-md">
+                <h1 class="my-3">Contact me</h1>
+                <h5>E-mail: <small>saintdragon2@gmail.com</small></h5>
+            </div>
         </div>
-
     </div>
-
-
-{%endblock%}
+{% endblock %}
